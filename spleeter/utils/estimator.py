@@ -36,7 +36,10 @@ def create_estimator(params, MWF):
     params['model_dir'] = model_provider.get(model_directory)
     params['MWF'] = MWF
     # Setup config
-    session_config = tf.compat.v1.ConfigProto()
+    session_config = tf.compat.v1.ConfigProto(device_count={"CPU": 1},
+                                              inter_op_parallelism_threads=1,
+                                              intra_op_parallelism_threads=1,
+                                              log_device_placement=False)
     session_config.gpu_options.per_process_gpu_memory_fraction = 0.7
     config = tf.estimator.RunConfig(session_config=session_config)
     # Setup estimator
